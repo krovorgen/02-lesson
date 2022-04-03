@@ -183,7 +183,7 @@ app.put('/api/posts/:id', (req: Request, res: Response) => {
     post.shortDescription = req.body.shortDescription;
     post.content = req.body.content;
     post.bloggerId = id;
-    res.send(204);
+    res.sendStatus(204);
   }
 });
 
