@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 const ADMIN_ID = '0';
 const ADMIN_NAME = 'Olga';
