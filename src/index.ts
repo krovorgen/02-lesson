@@ -24,7 +24,7 @@ let posts = [
   {
     id: POST_ID,
     title: 'Обед',
-    shortDescription: 'Кушал чепубели',
+    shortDescription: 'Кушала',
     content: 'было вкусно',
     bloggerId: ADMIN_ID,
     bloggerName: ADMIN_NAME,
