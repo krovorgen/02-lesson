@@ -27,6 +27,7 @@ postsRouter
     body('shortDescription').notEmpty(),
     body('content').notEmpty(),
     inputValidatorMiddleware,
+    bloggerExistsMiddleware,
     (req: Request, res: Response) => {
       const id = req.params.id;
       const isUpdated = postsRepository.updateById(id, req.body.title, req.body.shortDescription, req.body.content);
