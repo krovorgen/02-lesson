@@ -3,7 +3,6 @@ import { body } from 'express-validator';
 
 import { bloggersRepository } from '../repositories/bloggers-repository';
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
-import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
 
 export const bloggersRouter = Router({});
 
@@ -26,7 +25,6 @@ bloggersRouter
     body('youtubeUrl')
       .notEmpty()
       .matches(/^(ftp|http|https):\/\/[^ "]+$/),
-    bloggerExistsMiddleware,
     inputValidatorMiddleware,
     (req: Request, res: Response) => {
       const id = req.params.bloggerId;
@@ -48,7 +46,7 @@ bloggersRouter
       res.status(201).send(bloggersRepository.create(req.body.name, req.body.youtubeUrl));
     }
   )
-  .delete('/:bloggerId', bloggerExistsMiddleware, inputValidatorMiddleware, (req: Request, res: Response) => {
+  .delete('/:bloggerId', (req: Request, res: Response) => {
     const id = req.params.bloggerId;
     const isDeleted = bloggersRepository.deleteById(id);
     res.sendStatus(isDeleted ? 204 : 404);
