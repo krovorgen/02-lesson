@@ -1,14 +1,15 @@
 import { v1 } from 'uuid';
 
-export let posts = [
-  {
-    id: '0',
-    title: 'Обед',
-    shortDescription: 'Кушала',
-    content: 'было вкусно',
-    bloggerId: '0',
-  },
-];
+type PostsType = {
+  id: string;
+  title: string;
+  shortDescription: string;
+  content: string;
+  bloggerId: string;
+};
+
+export let posts: PostsType[] = [];
+
 export const postsRepository = {
   get() {
     return posts;

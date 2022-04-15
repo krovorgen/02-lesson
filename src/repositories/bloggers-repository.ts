@@ -1,12 +1,13 @@
 import { v1 } from 'uuid';
 
-export let bloggers = [
-  {
-    id: '0',
-    name: 'Olga',
-    youtubeUrl: 'https://www.youtube.com/channel/UC1_6nRWugDv_B6icoZtHDDw',
-  },
-];
+type BloggersType = {
+  id: string;
+  name: string;
+  youtubeUrl: string;
+};
+
+export let bloggers: BloggersType[] = [];
+
 export const bloggersRepository = {
   get() {
     return bloggers;
