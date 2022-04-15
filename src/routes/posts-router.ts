@@ -1,8 +1,9 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { postsRepository } from '../repositories/posts-repository';
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
 import { body, param } from 'express-validator';
 import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
+import { bloggers } from '../repositories/bloggers-repository';
 
 export const postsRouter = Router({});
 
@@ -42,7 +43,20 @@ postsRouter
     body('content').notEmpty(),
     body('bloggerId').notEmpty().isNumeric(),
     inputValidatorMiddleware,
-    bloggerExistsMiddleware,
+    (req: Request, res: Response, next: NextFunction) => {
+      let bloggerId: string;
+      if (req.params.bloggerId) {
+        bloggerId = req.params.bloggerId;
+      } else {
+        bloggerId = req.body.bloggerId;
+      }
+      const isFounded = bloggers.find((user) => user.id === +bloggerId);
+      if (!isFounded) {
+        res.sendStatus(400).send('This blogger not found');
+      } else {
+        next();
+      }
+    },
     (req: Request, res: Response) => {
       const createdPost = postsRepository.create(
         req.body.bloggerId,
