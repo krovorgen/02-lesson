@@ -43,20 +43,6 @@ postsRouter
     body('content').notEmpty(),
     body('bloggerId').notEmpty().isNumeric(),
     inputValidatorMiddleware,
-    (req: Request, res: Response, next: NextFunction) => {
-      let bloggerId: string;
-      if (req.params.bloggerId) {
-        bloggerId = req.params.bloggerId;
-      } else {
-        bloggerId = req.body.bloggerId;
-      }
-      const isFounded = bloggers.find((user) => user.id === +bloggerId);
-      if (!isFounded) {
-        res.sendStatus(400).send('This blogger not found');
-      } else {
-        next();
-      }
-    },
     (req: Request, res: Response) => {
       const createdPost = postsRepository.create(
         req.body.bloggerId,
