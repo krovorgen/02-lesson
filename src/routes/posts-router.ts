@@ -27,11 +27,10 @@ postsRouter
     body('shortDescription').notEmpty(),
     body('content').notEmpty(),
     inputValidatorMiddleware,
-    bloggerExistsMiddleware,
     (req: Request, res: Response) => {
       const id = req.params.bloggerId;
       const isUpdated = postsRepository.updateById(id, req.body.title, req.body.shortDescription, req.body.content);
-      res.sendStatus(isUpdated ? 204 : 404);
+      res.sendStatus(isUpdated ? 204 : 400);
     }
   )
   .post(
@@ -41,7 +40,6 @@ postsRouter
     body('content').notEmpty(),
     body('bloggerId').notEmpty(),
     inputValidatorMiddleware,
-    bloggerExistsMiddleware,
     (req: Request, res: Response) => {
       const createdPost = postsRepository.create(
         req.body.bloggerId,
@@ -49,7 +47,11 @@ postsRouter
         req.body.shortDescription,
         req.body.content
       );
-      res.status(201).send(createdPost);
+      if (createdPost) {
+        res.status(201).send(createdPost);
+      } else {
+        res.sendStatus(400);
+      }
     }
   )
   .delete('/:id', (req: Request, res: Response) => {
