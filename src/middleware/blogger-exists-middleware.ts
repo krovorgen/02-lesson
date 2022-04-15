@@ -5,8 +5,13 @@ export const bloggerExistsMiddleware = (req: Request, res: Response, next: NextF
   let bloggerId: string;
   if (req.params.bloggerId) {
     bloggerId = req.params.bloggerId;
-  } else {
+  }
+  if (req.params.bloggerId) {
     bloggerId = req.body.bloggerId;
+  }
+  // @ts-ignore
+  if (bloggerId === undefined) {
+    next();
   }
   const isFounded = bloggers.find((user) => user.id === +bloggerId);
   if (!isFounded) {
