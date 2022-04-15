@@ -35,11 +35,11 @@ postsRouter
   )
   .post(
     '/',
+    bloggerExistsMiddleware,
     body('title').notEmpty(),
     body('shortDescription').notEmpty(),
     body('content').notEmpty(),
     body('bloggerId').notEmpty(),
-    bloggerExistsMiddleware,
     inputValidatorMiddleware,
     (req: Request, res: Response) => {
       const createdPost = postsRepository.create(
