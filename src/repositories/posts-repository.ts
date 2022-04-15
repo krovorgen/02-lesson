@@ -1,9 +1,12 @@
+import { bloggers } from './bloggers-repository';
+
 type PostsType = {
   id: number;
   title: string;
   shortDescription: string;
   content: string;
   bloggerId: number;
+  bloggerName: string;
 };
 
 export let posts: PostsType[] = [
@@ -13,6 +16,7 @@ export let posts: PostsType[] = [
     shortDescription: 'Кушала',
     content: 'было вкусно',
     bloggerId: 0,
+    bloggerName: 'Olga',
   },
 ];
 export const postsRepository = {
@@ -45,12 +49,13 @@ export const postsRepository = {
     }
   },
   create(id: string, title: string, shortDescription: string, content: string) {
-    const newPost = {
+    const newPost: PostsType = {
       id: +new Date(),
       title,
       shortDescription,
       content,
       bloggerId: +id,
+      bloggerName: bloggers.find((item) => item.id === +id)!.name,
     };
     posts.push(newPost);
     return newPost;
