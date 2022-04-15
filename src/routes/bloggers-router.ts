@@ -22,7 +22,9 @@ bloggersRouter
   .put(
     '/:id',
     body('name').notEmpty(),
-    body('youtubeUrl').notEmpty(),
+    body('youtubeUrl')
+      .notEmpty()
+      .matches(/^(ftp|http|https):\/\/[^ "]+$/),
     inputValidatorMiddleware,
     (req: Request, res: Response) => {
       const id = req.params.id;
@@ -36,7 +38,9 @@ bloggersRouter
   .post(
     '/',
     body('name').notEmpty(),
-    body('youtubeUrl').notEmpty(),
+    body('youtubeUrl')
+      .notEmpty()
+      .matches(/^(ftp|http|https):\/\/[^ "]+$/),
     inputValidatorMiddleware,
     (req: Request, res: Response) => {
       res.status(201).send(bloggersRepository.create(req.body.name, req.body.youtubeUrl));
