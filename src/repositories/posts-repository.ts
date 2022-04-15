@@ -49,6 +49,8 @@ export const postsRepository = {
     }
   },
   create(id: string, title: string, shortDescription: string, content: string) {
+    const isFounded = bloggers.find((user) => user.id === +id);
+    if (!isFounded) return false;
     const newPost: PostsType = {
       id: +new Date(),
       title,
