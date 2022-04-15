@@ -8,6 +8,9 @@ export const bloggerExistsMiddleware = (req: Request, res: Response, next: NextF
   } else {
     bloggerId = req.body.bloggerId;
   }
+  if (isNaN(Number(bloggerId))) {
+    res.sendStatus(400);
+  }
   const isFounded = bloggers.find((user) => user.id === +bloggerId);
   if (!isFounded) {
     res.sendStatus(404).send('This blogger not found');
