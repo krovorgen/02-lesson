@@ -22,12 +22,12 @@ bloggersRouter
   })
   .put(
     '/:bloggerId',
-    bloggerExistsMiddleware,
     body('name').notEmpty(),
     body('youtubeUrl')
       .notEmpty()
       .matches(/^(ftp|http|https):\/\/[^ "]+$/),
     inputValidatorMiddleware,
+    bloggerExistsMiddleware,
     (req: Request, res: Response) => {
       const id = req.params.bloggerId;
       const isUpdated = bloggersRepository.updateById(id, req.body.name, req.body.youtubeUrl);
