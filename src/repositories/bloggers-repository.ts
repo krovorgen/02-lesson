@@ -1,22 +1,26 @@
-import { v1 } from 'uuid';
-
 type BloggersType = {
-  id: string;
+  id: number;
   name: string;
   youtubeUrl: string;
 };
 
-export let bloggers: BloggersType[] = [];
+export let bloggers: BloggersType[] = [
+  {
+    id: 0,
+    name: 'Olga',
+    youtubeUrl: 'https://www.youtube.com/channel/UC1_6nRWugDv_B6icoZtHDDw',
+  },
+];
 
 export const bloggersRepository = {
   get() {
     return bloggers;
   },
   getById(id: string) {
-    return bloggers.find((user) => user.id === id);
+    return bloggers.find((user) => user.id === +id);
   },
   deleteById(id: string) {
-    const index = bloggers.findIndex((item) => item.id === id);
+    const index = bloggers.findIndex((item) => item.id === +id);
 
     if (index !== -1) {
       bloggers.splice(index, 1);
@@ -26,7 +30,7 @@ export const bloggersRepository = {
     }
   },
   updateById(id: string, name: string, youtubeUrl: string) {
-    const user = bloggers.find((user) => user.id === id);
+    const user = bloggers.find((user) => user.id === +id);
     if (user) {
       user.name = name;
       user.youtubeUrl = youtubeUrl;
@@ -37,7 +41,7 @@ export const bloggersRepository = {
   },
   create(name: string, youtubeUrl: string) {
     const newBlogger = {
-      id: v1(),
+      id: +new Date(),
       name,
       youtubeUrl,
     };

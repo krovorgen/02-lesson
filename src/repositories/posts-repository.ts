@@ -1,24 +1,29 @@
-import { v1 } from 'uuid';
-
 type PostsType = {
-  id: string;
+  id: number;
   title: string;
   shortDescription: string;
   content: string;
-  bloggerId: string;
+  bloggerId: number;
 };
 
-export let posts: PostsType[] = [];
-
+export let posts: PostsType[] = [
+  {
+    id: 0,
+    title: 'Обед',
+    shortDescription: 'Кушала',
+    content: 'было вкусно',
+    bloggerId: 0,
+  },
+];
 export const postsRepository = {
   get() {
     return posts;
   },
   getById(id: string) {
-    return posts.find((post) => post.id === id);
+    return posts.find((post) => post.id === +id);
   },
   deleteById(id: string) {
-    const index = posts.findIndex((item) => item.id === id);
+    const index = posts.findIndex((item) => item.id === +id);
 
     if (index !== -1) {
       posts.splice(index, 1);
@@ -28,12 +33,12 @@ export const postsRepository = {
     }
   },
   updateById(id: string, title: string, shortDescription: string, content: string) {
-    const post = posts.find((post) => post.id === id);
+    const post = posts.find((post) => post.id === +id);
     if (post) {
       post.title = title;
       post.shortDescription = shortDescription;
       post.content = content;
-      post.bloggerId = id; // ???
+      post.bloggerId = +id; // ???
       return true;
     } else {
       return false;
@@ -41,11 +46,11 @@ export const postsRepository = {
   },
   create(id: string, title: string, shortDescription: string, content: string) {
     const newPost = {
-      id: v1(),
+      id: +new Date(),
       title,
       shortDescription,
       content,
-      bloggerId: id,
+      bloggerId: +id,
     };
     posts.push(newPost);
     return newPost;
