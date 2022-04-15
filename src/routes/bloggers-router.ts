@@ -22,7 +22,6 @@ bloggersRouter
   })
   .put(
     '/:bloggerId',
-    bloggerExistsMiddleware,
     body('name').notEmpty(),
     body('youtubeUrl')
       .notEmpty()
