@@ -40,7 +40,7 @@ postsRouter
     body('title').notEmpty(),
     body('shortDescription').notEmpty(),
     body('content').notEmpty(),
-    body('bloggerId').notEmpty().isInt(),
+    body('bloggerId').notEmpty().isNumeric(),
     inputValidatorMiddleware,
     bloggerExistsMiddleware,
     (req: Request, res: Response) => {
