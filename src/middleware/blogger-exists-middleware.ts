@@ -10,7 +10,7 @@ export const bloggerExistsMiddleware = (req: Request, res: Response, next: NextF
   }
   const isFounded = bloggers.find((user) => user.id === +bloggerId);
   if (!isFounded) {
-    res.sendStatus(404).send('This blogger not found');
+    res.sendStatus(400).send('This blogger not found');
   } else {
     next();
   }
