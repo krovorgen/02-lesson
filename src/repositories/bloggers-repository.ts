@@ -19,25 +19,10 @@ export const bloggersRepository = {
   getById(id: string) {
     return bloggers.find((user) => user.id === +id);
   },
-  deleteById(id: string) {
-    const index = bloggers.findIndex((item) => item.id === +id);
-
-    if (index !== -1) {
-      bloggers.splice(index, 1);
-      return true;
-    } else {
-      return false;
-    }
-  },
   updateById(id: string, name: string, youtubeUrl: string) {
-    const user = bloggers.find((user) => user.id === +id);
-    if (user) {
-      user.name = name;
-      user.youtubeUrl = youtubeUrl;
-      return true;
-    } else {
-      return false;
-    }
+    const user = bloggers.find((user) => user.id === +id)!;
+    user.name = name;
+    user.youtubeUrl = youtubeUrl;
   },
   create(name: string, youtubeUrl: string) {
     const newBlogger = {
@@ -47,5 +32,15 @@ export const bloggersRepository = {
     };
     bloggers.push(newBlogger);
     return newBlogger;
+  },
+  deleteById(id: string) {
+    const index = bloggers.findIndex((item) => item.id === +id);
+
+    if (index !== -1) {
+      bloggers.splice(index, 1);
+      return true;
+    } else {
+      return false;
+    }
   },
 };

@@ -30,9 +30,8 @@ bloggersRouter
     bloggerExistsMiddleware,
     (req: Request, res: Response) => {
       const id = req.params.bloggerId;
-      const isUpdated = bloggersRepository.updateById(id, req.body.name, req.body.youtubeUrl);
-
-      res.sendStatus(isUpdated ? 204 : 404);
+      bloggersRepository.updateById(id, req.body.name, req.body.youtubeUrl);
+      res.sendStatus(204);
     }
   )
   .post(
