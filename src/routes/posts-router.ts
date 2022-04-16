@@ -57,9 +57,8 @@ postsRouter
       }
     }
   )
-  .delete('/:postId', (req: Request, res: Response) => {
+  .delete('/:postId', postExistsMiddleware, (req: Request, res: Response) => {
     const id = req.params.postId;
-    const isDeleted = postsRepository.deleteById(id);
-
-    res.sendStatus(isDeleted ? 204 : 404);
+    postsRepository.deleteById(id);
+    res.sendStatus(204);
   });

@@ -26,16 +26,6 @@ export const postsRepository = {
   getById(id: string) {
     return posts.find((post) => post.id === +id);
   },
-  deleteById(id: string) {
-    const index = posts.findIndex((item) => item.id === +id);
-
-    if (index !== -1) {
-      posts.splice(index, 1);
-      return true;
-    } else {
-      return false;
-    }
-  },
   updateById(id: string, title: string, shortDescription: string, content: string, bloggerId: string) {
     const post = posts.find((post) => post.id === +id);
     const isFounded = bloggers.find((user) => user.id === +bloggerId);
@@ -63,5 +53,10 @@ export const postsRepository = {
     };
     posts.push(newPost);
     return newPost;
+  },
+  deleteById(id: string) {
+    const index = posts.findIndex((item) => item.id === +id);
+
+    posts.splice(index, 1);
   },
 };
