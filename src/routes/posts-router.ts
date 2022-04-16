@@ -61,9 +61,9 @@ postsRouter
       }
     }
   )
-  .delete('/:id', (req: Request, res: Response) => {
-    const id = req.params.id;
-
+  .delete('/:postId', (req: Request, res: Response) => {
+    const id = req.params.postId;
     const isDeleted = postsRepository.deleteById(id);
+
     res.sendStatus(isDeleted ? 204 : 404);
   });
