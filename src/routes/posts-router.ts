@@ -3,7 +3,6 @@ import { postsRepository } from '../repositories/posts-repository';
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
 import { body, param } from 'express-validator';
 import { postExistsMiddleware } from '../middleware/post-exists-middleware';
-import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
 
 export const postsRouter = Router({});
 
@@ -25,7 +24,6 @@ postsRouter
     param('postId').isNumeric(),
     inputValidatorMiddleware,
     postExistsMiddleware,
-    bloggerExistsMiddleware,
     (req: Request, res: Response) => {
       const id = req.params.postId;
       const isUpdated = postsRepository.updateById(
