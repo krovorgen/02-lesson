@@ -11,14 +11,10 @@ bloggersRouter
   .get('/', (req: Request, res: Response) => {
     res.send(bloggersRepository.get());
   })
-  .get('/:bloggerId', (req: Request, res: Response) => {
+  .get('/:bloggerId', bloggerExistsMiddleware, (req: Request, res: Response) => {
     const id = req.params.bloggerId;
     const user = bloggersRepository.getById(id);
-    if (user) {
-      res.send(user);
-    } else {
-      res.sendStatus(404);
-    }
+    res.send(user);
   })
   .put(
     '/:bloggerId',
