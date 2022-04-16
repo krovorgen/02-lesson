@@ -35,12 +35,6 @@ export const bloggersRepository = {
   },
   deleteById(id: string) {
     const index = bloggers.findIndex((item) => item.id === +id);
-
-    if (index !== -1) {
-      bloggers.splice(index, 1);
-      return true;
-    } else {
-      return false;
-    }
+    bloggers.splice(index, 1);
   },
 };
