@@ -37,7 +37,7 @@ postsRouter
         req.body.content,
         req.body.bloggerId
       );
-      res.sendStatus(isUpdated ? 204 : 400);
+      res.sendStatus(isUpdated ? 204 : 404);
     }
   )
   .post(
