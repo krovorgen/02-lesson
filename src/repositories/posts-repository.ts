@@ -42,7 +42,7 @@ export const postsRepository = {
       post.title = title;
       post.shortDescription = shortDescription;
       post.content = content;
-      post.bloggerId = +bloggerId; // ???
+      post.bloggerId = +bloggerId;
       return true;
     } else {
       return false;
