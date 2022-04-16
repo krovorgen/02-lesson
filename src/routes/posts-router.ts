@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { postsRepository } from '../repositories/posts-repository';
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
 import { postExistsMiddleware } from '../middleware/post-exists-middleware';
 
@@ -28,6 +28,7 @@ postsRouter
     body('shortDescription').notEmpty(),
     body('content').notEmpty(),
     body('bloggerId').notEmpty().isNumeric(),
+    param('postId').isNumeric(),
     inputValidatorMiddleware,
     bloggerExistsMiddleware,
     postExistsMiddleware,
