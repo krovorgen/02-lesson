@@ -3,6 +3,7 @@ import { postsRepository } from '../repositories/posts-repository';
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
 import { body } from 'express-validator';
 import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
+import { postExistsMiddleware } from '../middleware/post-exists-middleware';
 
 export const postsRouter = Router({});
 
@@ -22,14 +23,16 @@ postsRouter
     }
   })
   .put(
-    '/:id',
+    '/:postId',
     body('title').notEmpty(),
     body('shortDescription').notEmpty(),
     body('content').notEmpty(),
     body('bloggerId').notEmpty().isNumeric(),
+    bloggerExistsMiddleware,
+    postExistsMiddleware,
     inputValidatorMiddleware,
     (req: Request, res: Response) => {
-      const id = req.params.id;
+      const id = req.params.postId;
       const isUpdated = postsRepository.updateById(
         id,
         req.body.title,
@@ -37,7 +40,7 @@ postsRouter
         req.body.content,
         req.body.bloggerId
       );
-      res.sendStatus(isUpdated ? 204 : 404);
+      res.sendStatus(isUpdated ? 204 : 400);
     }
   )
   .post(
