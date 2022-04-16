@@ -10,14 +10,10 @@ postsRouter
   .get('/', (req: Request, res: Response) => {
     res.send(postsRepository.get());
   })
-  .get('/:postId', (req: Request, res: Response) => {
+  .get('/:postId', postExistsMiddleware, (req: Request, res: Response) => {
     const id = req.params.postId;
     const post = postsRepository.getById(id);
-    if (post) {
-      res.send(post);
-    } else {
-      res.sendStatus(404);
-    }
+    res.send(post);
   })
   .put(
     '/:postId',
