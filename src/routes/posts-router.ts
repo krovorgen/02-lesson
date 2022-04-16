@@ -30,7 +30,6 @@ postsRouter
     body('bloggerId').notEmpty().isNumeric(),
     param('postId').isNumeric(),
     inputValidatorMiddleware,
-    bloggerExistsMiddleware,
     postExistsMiddleware,
     (req: Request, res: Response) => {
       const id = req.params.postId;
