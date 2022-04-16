@@ -2,7 +2,6 @@ import { Request, Response, Router } from 'express';
 import { postsRepository } from '../repositories/posts-repository';
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
 import { body, param } from 'express-validator';
-import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
 import { postExistsMiddleware } from '../middleware/post-exists-middleware';
 
 export const postsRouter = Router({});
@@ -11,11 +10,9 @@ postsRouter
   .get('/', (req: Request, res: Response) => {
     res.send(postsRepository.get());
   })
-  .get('/:id', (req: Request, res: Response) => {
-    const id = req.params.id;
-
+  .get('/:postId', (req: Request, res: Response) => {
+    const id = req.params.postId;
     const post = postsRepository.getById(id);
-
     if (post) {
       res.send(post);
     } else {
