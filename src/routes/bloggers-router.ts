@@ -32,9 +32,7 @@ bloggersRouter
       const id = req.params.bloggerId;
       const isUpdated = bloggersRepository.updateById(id, req.body.name, req.body.youtubeUrl);
 
-      if (isUpdated) {
-        res.sendStatus(isUpdated ? 204 : 404);
-      }
+      res.sendStatus(isUpdated ? 204 : 404);
     }
   )
   .post(
