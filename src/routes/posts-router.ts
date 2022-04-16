@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import { postsRepository } from '../repositories/posts-repository';
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
 import { body } from 'express-validator';
+import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
 
 export const postsRouter = Router({});
 
@@ -36,7 +37,7 @@ postsRouter
         req.body.content,
         req.body.bloggerId
       );
-      res.sendStatus(isUpdated ? 204 : 404);
+      res.sendStatus(isUpdated ? 204 : 400);
     }
   )
   .post(
