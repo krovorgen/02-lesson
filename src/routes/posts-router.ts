@@ -23,17 +23,22 @@ postsRouter
     }
   })
   .put(
-    '/:bloggerId',
+    '/:id',
     body('title').notEmpty(),
     body('shortDescription').notEmpty(),
     body('content').notEmpty(),
     param('bloggerId').notEmpty(),
     inputValidatorMiddleware,
-    bloggerExistsMiddleware,
     (req: Request, res: Response) => {
-      const id = req.params.bloggerId;
-      const isUpdated = postsRepository.updateById(id, req.body.title, req.body.shortDescription, req.body.content);
-      res.sendStatus(isUpdated ? 204 : 400);
+      const id = req.params.id;
+      const isUpdated = postsRepository.updateById(
+        id,
+        req.body.title,
+        req.body.shortDescription,
+        req.body.content,
+        req.body.bloggerId
+      );
+      res.sendStatus(isUpdated ? 204 : 404);
     }
   )
   .post(

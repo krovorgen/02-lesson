@@ -36,13 +36,13 @@ export const postsRepository = {
       return false;
     }
   },
-  updateById(id: string, title: string, shortDescription: string, content: string) {
+  updateById(id: string, title: string, shortDescription: string, content: string, bloggerId: string) {
     const post = posts.find((post) => post.id === +id);
     if (post) {
       post.title = title;
       post.shortDescription = shortDescription;
       post.content = content;
-      post.bloggerId = +id; // ???
+      post.bloggerId = +bloggerId; // ???
       return true;
     } else {
       return false;
