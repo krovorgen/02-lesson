@@ -28,8 +28,6 @@ export const postsRepository = {
   },
   updateById(id: string, title: string, shortDescription: string, content: string, bloggerId: string) {
     const post = posts.find((post) => post.id === +id);
-    const isFounded = bloggers.find((user) => user.id === +bloggerId);
-    if (!isFounded) return false;
     if (post) {
       post.title = title;
       post.shortDescription = shortDescription;
