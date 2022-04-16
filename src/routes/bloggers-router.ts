@@ -11,8 +11,8 @@ bloggersRouter
   .get('/', (req: Request, res: Response) => {
     res.send(bloggersRepository.get());
   })
-  .get('/:id', (req: Request, res: Response) => {
-    const id = req.params.id;
+  .get('/:bloggerId', (req: Request, res: Response) => {
+    const id = req.params.bloggerId;
     const user = bloggersRepository.getById(id);
     if (user) {
       res.send(user);
