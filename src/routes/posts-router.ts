@@ -25,7 +25,7 @@ postsRouter
     body('title').notEmpty(),
     body('shortDescription').notEmpty(),
     body('content').notEmpty(),
-    body('bloggerId').notEmpty(),
+    body('bloggerId').notEmpty().isNumeric(),
     inputValidatorMiddleware,
     (req: Request, res: Response) => {
       const id = req.params.id;
