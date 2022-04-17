@@ -9,13 +9,12 @@ import { checkYouTubeUrl } from './check-youtube-url-middleware';
 export const bloggersRouter = Router({});
 
 bloggersRouter
-  .get('/', (req: Request, res: Response) => {
-    res.send(bloggersRepository.get());
+  .get('/', async (req: Request, res: Response) => {
+    res.send(await bloggersRepository.get());
   })
-  .get('/:bloggerId', bloggerExistsMiddleware, (req: Request, res: Response) => {
+  .get('/:bloggerId', bloggerExistsMiddleware, async (req: Request, res: Response) => {
     const id = req.params.bloggerId;
-    const user = bloggersRepository.getById(id);
-    res.send(user);
+    res.send(await bloggersRepository.getById(id));
   })
   .put(
     '/:bloggerId',
@@ -23,18 +22,24 @@ bloggersRouter
     checkYouTubeUrl,
     inputValidatorMiddleware,
     bloggerExistsMiddleware,
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
       const id = req.params.bloggerId;
-      bloggersRepository.updateById(id, req.body.name, req.body.youtubeUrl);
+      await bloggersRepository.updateById(id, req.body.name, req.body.youtubeUrl);
       res.sendStatus(204);
     }
   )
-  .post('/', body('name').notEmpty(), checkYouTubeUrl, inputValidatorMiddleware, (req: Request, res: Response) => {
-    res.status(201).send(bloggersRepository.create(req.body.name, req.body.youtubeUrl));
-  })
-  .delete('/:bloggerId', bloggerExistsMiddleware, (req: Request, res: Response) => {
+  .post(
+    '/',
+    body('name').notEmpty(),
+    checkYouTubeUrl,
+    inputValidatorMiddleware,
+    async (req: Request, res: Response) => {
+      const newPost = await bloggersRepository.create(req.body.name, req.body.youtubeUrl);
+      res.status(201).send(newPost);
+    }
+  )
+  .delete('/:bloggerId', bloggerExistsMiddleware, async (req: Request, res: Response) => {
     const id = req.params.bloggerId;
-    bloggersRepository.deleteById(id);
-
+    await bloggersRepository.deleteById(id);
     res.sendStatus(204);
   });

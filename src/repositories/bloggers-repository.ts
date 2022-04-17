@@ -1,40 +1,35 @@
-type BloggersType = {
+import { client } from './db';
+import { ObjectId } from 'mongodb';
+
+export type BloggersType = {
   id: number;
   name: string;
   youtubeUrl: string;
 };
 
-export let bloggers: BloggersType[] = [
-  {
-    id: 0,
-    name: 'Olga',
-    youtubeUrl: 'https://www.youtube.com/channel/UC1_6nRWugDv_B6icoZtHDDw',
-  },
-];
+export let bloggers = client.db('test').collection<BloggersType>('bloggers');
 
 export const bloggersRepository = {
-  get() {
-    return bloggers;
+  async get(): Promise<BloggersType[]> {
+    return await bloggers.find({}, { projection: { _id: 0 } }).toArray();
   },
-  getById(id: string) {
-    return bloggers.find((user) => user.id === +id);
+  async getById(id: string): Promise<BloggersType | null> {
+    return await bloggers.findOne({ id: +id }, { projection: { _id: 0 } });
   },
-  updateById(id: string, name: string, youtubeUrl: string) {
-    const user = bloggers.find((user) => user.id === +id)!;
-    user.name = name;
-    user.youtubeUrl = youtubeUrl;
+  async updateById(id: string, name: string, youtubeUrl: string): Promise<void> {
+    await bloggers.updateOne({ id: +id }, { $set: { name, youtubeUrl } });
   },
-  create(name: string, youtubeUrl: string) {
-    const newBlogger = {
+  async create(name: string, youtubeUrl: string): Promise<BloggersType> {
+    const newBlogger: BloggersType & { _id?: ObjectId } = {
       id: +new Date(),
       name,
       youtubeUrl,
     };
-    bloggers.push(newBlogger);
+    await bloggers.insertOne(newBlogger);
+    delete newBlogger['_id'];
     return newBlogger;
   },
-  deleteById(id: string) {
-    const index = bloggers.findIndex((item) => item.id === +id);
-    bloggers.splice(index, 1);
+  async deleteById(id: string): Promise<void> {
+    await bloggers.deleteOne({ id: +id });
   },
 };

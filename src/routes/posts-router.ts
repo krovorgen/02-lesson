@@ -7,13 +7,12 @@ import { postExistsMiddleware } from '../middleware/post-exists-middleware';
 export const postsRouter = Router({});
 
 postsRouter
-  .get('/', (req: Request, res: Response) => {
-    res.send(postsRepository.get());
+  .get('/', async (req: Request, res: Response) => {
+    res.send(await postsRepository.get());
   })
-  .get('/:postId', postExistsMiddleware, (req: Request, res: Response) => {
+  .get('/:postId', postExistsMiddleware, async (req: Request, res: Response) => {
     const id = req.params.postId;
-    const post = postsRepository.getById(id);
-    res.send(post);
+    res.send(await postsRepository.getById(id));
   })
   .put(
     '/:postId',
@@ -24,9 +23,9 @@ postsRouter
     param('postId').isNumeric(),
     inputValidatorMiddleware,
     postExistsMiddleware,
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
       const id = req.params.postId;
-      const isUpdated = postsRepository.updateById(
+      const isUpdated = await postsRepository.updateById(
         id,
         req.body.title,
         req.body.shortDescription,
@@ -43,8 +42,8 @@ postsRouter
     body('content').notEmpty(),
     body('bloggerId').notEmpty().isNumeric(),
     inputValidatorMiddleware,
-    (req: Request, res: Response) => {
-      const createdPost = postsRepository.create(
+    async (req: Request, res: Response) => {
+      const createdPost = await postsRepository.create(
         req.body.bloggerId,
         req.body.title,
         req.body.shortDescription,
@@ -57,8 +56,8 @@ postsRouter
       }
     }
   )
-  .delete('/:postId', postExistsMiddleware, (req: Request, res: Response) => {
+  .delete('/:postId', postExistsMiddleware, async (req: Request, res: Response) => {
     const id = req.params.postId;
-    postsRepository.deleteById(id);
+    await postsRepository.deleteById(id);
     res.sendStatus(204);
   });

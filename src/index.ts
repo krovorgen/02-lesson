@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { bloggersRouter } from './routes/bloggers-router';
 import { postsRouter } from './routes/posts-router';
+import { runDb } from './repositories/db';
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,11 @@ const port = process.env.PORT || 4000;
 app.use('/api/bloggers', bloggersRouter);
 app.use('/api/posts', postsRouter);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+const startApp = async () => {
+  await runDb();
+
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
+};
+startApp();
