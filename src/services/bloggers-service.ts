@@ -1,11 +1,5 @@
-import { bloggersRepository } from '../repositories/bloggers-repository';
+import { bloggersRepository, BloggersType } from '../repositories/bloggers-repository';
 import { ObjectId } from 'mongodb';
-
-export type BloggersType = {
-  id: number;
-  name: string;
-  youtubeUrl: string;
-};
 
 export const bloggersService = {
   async get(): Promise<BloggersType[]> {

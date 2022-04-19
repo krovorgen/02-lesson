@@ -1,5 +1,5 @@
-import { bloggersRepository } from '../repositories/bloggers-repository';
 import { NextFunction, Request, Response } from 'express';
+import { bloggersService } from '../services/bloggers-service';
 
 export const bloggerExistsMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   let bloggerId: string;
@@ -9,7 +9,7 @@ export const bloggerExistsMiddleware = async (req: Request, res: Response, next:
     bloggerId = req.body.bloggerId;
   }
 
-  const isFounded = await bloggersRepository.getById(bloggerId);
+  const isFounded = await bloggersService.getById(bloggerId);
   if (!isFounded) {
     res.sendStatus(404);
   } else {

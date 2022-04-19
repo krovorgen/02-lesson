@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
 import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
-import { checkYouTubeUrl } from './check-youtube-url-middleware';
+import { checkYouTubeUrl } from '../middleware/check-youtube-url-middleware';
 import { bloggersService } from '../services/bloggers-service';
 
 export const bloggersRouter = Router({});

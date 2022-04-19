@@ -1,18 +1,18 @@
 import { Request, Response, Router } from 'express';
-import { postsRepository } from '../repositories/posts-repository';
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
 import { body, param } from 'express-validator';
 import { postExistsMiddleware } from '../middleware/post-exists-middleware';
+import { postsService } from '../services/posts-service';
 
 export const postsRouter = Router({});
 
 postsRouter
   .get('/', async (req: Request, res: Response) => {
-    res.send(await postsRepository.get());
+    res.send(await postsService.get());
   })
   .get('/:postId', postExistsMiddleware, async (req: Request, res: Response) => {
     const id = req.params.postId;
-    res.send(await postsRepository.getById(id));
+    res.send(await postsService.getById(id));
   })
   .put(
     '/:postId',
@@ -25,7 +25,7 @@ postsRouter
     postExistsMiddleware,
     async (req: Request, res: Response) => {
       const id = req.params.postId;
-      const isUpdated = await postsRepository.updateById(
+      const isUpdated = await postsService.updateById(
         id,
         req.body.title,
         req.body.shortDescription,
@@ -43,7 +43,7 @@ postsRouter
     body('bloggerId').notEmpty().isNumeric(),
     inputValidatorMiddleware,
     async (req: Request, res: Response) => {
-      const createdPost = await postsRepository.create(
+      const createdPost = await postsService.create(
         req.body.bloggerId,
         req.body.title,
         req.body.shortDescription,
@@ -58,6 +58,6 @@ postsRouter
   )
   .delete('/:postId', postExistsMiddleware, async (req: Request, res: Response) => {
     const id = req.params.postId;
-    await postsRepository.deleteById(id);
+    await postsService.deleteById(id);
     res.sendStatus(204);
   });
