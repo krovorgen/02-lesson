@@ -1,4 +1,5 @@
 import { client } from './db';
+import { posts, PostType } from './posts-repository';
 
 export type BloggersType = {
   id: number;
@@ -23,5 +24,8 @@ export const bloggersRepository = {
   },
   async deleteById(id: string): Promise<void> {
     await bloggers.deleteOne({ id: +id });
+  },
+  async getPostsById(id: string): Promise<PostType[]> {
+    return await posts.find({ bloggerId: +id }).toArray();
   },
 };

@@ -1,5 +1,6 @@
 import { bloggersRepository, BloggersType } from '../repositories/bloggers-repository';
 import { ObjectId } from 'mongodb';
+import { postsRepository, PostType } from '../repositories/posts-repository';
 
 export const bloggersService = {
   async get(): Promise<BloggersType[]> {
@@ -23,5 +24,29 @@ export const bloggersService = {
   },
   async deleteById(id: string): Promise<void> {
     await bloggersRepository.deleteById(id);
+  },
+  async getPostsById(id: string): Promise<PostType[]> {
+    return await bloggersRepository.getPostsById(id);
+  },
+  async createPost(
+    bloggerId: string,
+    title: string,
+    shortDescription: string,
+    content: string
+  ): Promise<PostType | boolean> {
+    const blogger = await bloggersRepository.getById(bloggerId);
+    if (!blogger) return false;
+
+    const newPost: PostType & { _id?: ObjectId } = {
+      id: +new Date(),
+      title,
+      shortDescription,
+      content,
+      bloggerId: +bloggerId,
+      bloggerName: blogger.name,
+    };
+    await postsRepository.create(newPost);
+    delete newPost['_id'];
+    return newPost;
   },
 };

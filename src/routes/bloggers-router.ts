@@ -39,4 +39,25 @@ bloggersRouter
   .delete('/:bloggerId', bloggerExistsMiddleware, async (req: Request, res: Response) => {
     await bloggersService.deleteById(req.params.bloggerId);
     res.sendStatus(204);
-  });
+  })
+  .get('/:bloggerId/posts', bloggerExistsMiddleware, async (req: Request, res: Response) => {
+    res.send(await bloggersService.getPostsById(req.params.bloggerId));
+  })
+  .post(
+    '/:bloggerId/posts',
+    body('title').notEmpty(),
+    body('shortDescription').notEmpty(),
+    body('content').notEmpty(),
+    inputValidatorMiddleware,
+    bloggerExistsMiddleware,
+    async (req: Request, res: Response) => {
+      res.send(
+        await bloggersService.createPost(
+          req.params.bloggerId,
+          req.body.title,
+          req.body.shortDescription,
+          req.body.content
+        )
+      );
+    }
+  );
