@@ -22,3 +22,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+!/mongodb/bin/.gitignore
+!/mongodb/bin/install_compass
+!/mongodb/bin/mongo
+!/mongodb/bin/mongod
+!/mongodb/bin/mongos
+!/mongodb/LICENSE-Community.txt
+!/mongodb/MPL-2
+!/mongodb/README
+!/mongodb/THIRD-PARTY-NOTICES

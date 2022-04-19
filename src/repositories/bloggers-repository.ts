@@ -1,5 +1,4 @@
 import { client } from './db';
-import { ObjectId } from 'mongodb';
 
 export type BloggersType = {
   id: number;
@@ -19,15 +18,8 @@ export const bloggersRepository = {
   async updateById(id: string, name: string, youtubeUrl: string): Promise<void> {
     await bloggers.updateOne({ id: +id }, { $set: { name, youtubeUrl } });
   },
-  async create(name: string, youtubeUrl: string): Promise<BloggersType> {
-    const newBlogger: BloggersType & { _id?: ObjectId } = {
-      id: +new Date(),
-      name,
-      youtubeUrl,
-    };
+  async create(newBlogger: BloggersType): Promise<void> {
     await bloggers.insertOne(newBlogger);
-    delete newBlogger['_id'];
-    return newBlogger;
   },
   async deleteById(id: string): Promise<void> {
     await bloggers.deleteOne({ id: +id });

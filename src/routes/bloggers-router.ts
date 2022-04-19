@@ -1,20 +1,19 @@
 import { Request, Response, Router } from 'express';
 import { body } from 'express-validator';
 
-import { bloggersRepository } from '../repositories/bloggers-repository';
 import { inputValidatorMiddleware } from '../middleware/input-validator-middleware';
 import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
 import { checkYouTubeUrl } from './check-youtube-url-middleware';
+import { bloggersService } from '../services/bloggers-service';
 
 export const bloggersRouter = Router({});
 
 bloggersRouter
   .get('/', async (req: Request, res: Response) => {
-    res.send(await bloggersRepository.get());
+    res.send(await bloggersService.get());
   })
   .get('/:bloggerId', bloggerExistsMiddleware, async (req: Request, res: Response) => {
-    const id = req.params.bloggerId;
-    res.send(await bloggersRepository.getById(id));
+    res.send(await bloggersService.getById(req.params.bloggerId));
   })
   .put(
     '/:bloggerId',
@@ -23,8 +22,7 @@ bloggersRouter
     inputValidatorMiddleware,
     bloggerExistsMiddleware,
     async (req: Request, res: Response) => {
-      const id = req.params.bloggerId;
-      await bloggersRepository.updateById(id, req.body.name, req.body.youtubeUrl);
+      await bloggersService.updateById(req.params.bloggerId, req.body.name, req.body.youtubeUrl);
       res.sendStatus(204);
     }
   )
@@ -34,12 +32,11 @@ bloggersRouter
     checkYouTubeUrl,
     inputValidatorMiddleware,
     async (req: Request, res: Response) => {
-      const newPost = await bloggersRepository.create(req.body.name, req.body.youtubeUrl);
+      const newPost = await bloggersService.create(req.body.name, req.body.youtubeUrl);
       res.status(201).send(newPost);
     }
   )
   .delete('/:bloggerId', bloggerExistsMiddleware, async (req: Request, res: Response) => {
-    const id = req.params.bloggerId;
-    await bloggersRepository.deleteById(id);
+    await bloggersService.deleteById(req.params.bloggerId);
     res.sendStatus(204);
   });
