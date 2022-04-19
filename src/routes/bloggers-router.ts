@@ -5,6 +5,7 @@ import { inputValidatorMiddleware } from '../middleware/input-validator-middlewa
 import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware';
 import { checkYouTubeUrl } from '../middleware/check-youtube-url-middleware';
 import { bloggersService } from '../services/bloggers-service';
+import { postsService } from '../services/posts-service';
 
 export const bloggersRouter = Router({});
 
@@ -52,12 +53,7 @@ bloggersRouter
     bloggerExistsMiddleware,
     async (req: Request, res: Response) => {
       res.send(
-        await bloggersService.createPost(
-          req.params.bloggerId,
-          req.body.title,
-          req.body.shortDescription,
-          req.body.content
-        )
+        await postsService.create(req.params.bloggerId, req.body.title, req.body.shortDescription, req.body.content)
       );
     }
   );
