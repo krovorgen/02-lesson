@@ -1,10 +1,12 @@
 import { ObjectId } from 'mongodb';
 import { postsRepository, PostType } from '../repositories/posts-repository';
 import { bloggersRepository } from '../repositories/bloggers-repository';
+import { PaginationBodyResponse } from '../types/paginationBodyResponse';
+import { ConstructorPaginationType } from '../helpers/constructor-pagination';
 
 export const postsService = {
-  async get(): Promise<PostType[]> {
-    return await postsRepository.get();
+  async get(paginationData: ConstructorPaginationType): Promise<PaginationBodyResponse<PostType[]>> {
+    return await postsRepository.get(paginationData);
   },
   async getById(id: string): Promise<PostType | null> {
     return await postsRepository.getById(id);

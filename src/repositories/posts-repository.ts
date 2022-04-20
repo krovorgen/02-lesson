@@ -1,4 +1,6 @@
 import { client } from './db';
+import { PaginationBodyResponse } from '../types/paginationBodyResponse';
+import { ConstructorPaginationType } from '../helpers/constructor-pagination';
 
 export type PostType = {
   id: number;
@@ -12,8 +14,25 @@ export type PostType = {
 export let posts = client.db('test').collection<PostType>('posts');
 
 export const postsRepository = {
-  async get(): Promise<PostType[]> {
-    return await posts.find({}, { projection: { _id: 0 } }).toArray();
+  async getCountPosts(): Promise<number> {
+    return await posts.countDocuments();
+  },
+  async get(paginationData: ConstructorPaginationType): Promise<PaginationBodyResponse<PostType[]>> {
+    const resultDB = await posts
+      .find({}, { projection: { _id: 0 } })
+      .skip(paginationData.pageNumber > 0 ? (paginationData.pageNumber - 1) * paginationData.pageSize : 0)
+      .limit(paginationData.pageSize)
+      .toArray();
+
+    const totalCount = await postsRepository.getCountPosts();
+
+    return {
+      pagesCount: Math.ceil(totalCount / paginationData.pageSize),
+      page: paginationData.pageNumber,
+      pageSize: paginationData.pageSize,
+      totalCount,
+      items: resultDB,
+    };
   },
   async getById(id: string): Promise<PostType | null> {
     return await posts.findOne({ id: +id }, { projection: { _id: 0 } });

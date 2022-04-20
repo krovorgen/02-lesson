@@ -3,12 +3,15 @@ import { inputValidatorMiddleware } from '../middleware/input-validator-middlewa
 import { body, param } from 'express-validator';
 import { postExistsMiddleware } from '../middleware/post-exists-middleware';
 import { postsService } from '../services/posts-service';
+import { ArgPaginationType, constructorPagination } from '../helpers/constructor-pagination';
 
 export const postsRouter = Router({});
 
 postsRouter
   .get('/', async (req: Request, res: Response) => {
-    res.send(await postsService.get());
+    const paginationData = constructorPagination(req.query as ArgPaginationType);
+
+    res.send(await postsService.get(paginationData));
   })
   .get('/:postId', postExistsMiddleware, async (req: Request, res: Response) => {
     const id = req.params.postId;

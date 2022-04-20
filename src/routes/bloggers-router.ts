@@ -6,12 +6,15 @@ import { bloggerExistsMiddleware } from '../middleware/blogger-exists-middleware
 import { checkYouTubeUrl } from '../middleware/check-youtube-url-middleware';
 import { bloggersService } from '../services/bloggers-service';
 import { postsService } from '../services/posts-service';
+import { ArgPaginationType, constructorPagination } from '../helpers/constructor-pagination';
 
 export const bloggersRouter = Router({});
 
 bloggersRouter
   .get('/', async (req: Request, res: Response) => {
-    res.send(await bloggersService.get());
+    const paginationData = constructorPagination(req.query as ArgPaginationType);
+
+    res.send(await bloggersService.get(paginationData));
   })
   .get('/:bloggerId', bloggerExistsMiddleware, async (req: Request, res: Response) => {
     res.send(await bloggersService.getById(req.params.bloggerId));
@@ -42,7 +45,8 @@ bloggersRouter
     res.sendStatus(204);
   })
   .get('/:bloggerId/posts', bloggerExistsMiddleware, async (req: Request, res: Response) => {
-    res.send(await bloggersService.getPostsById(req.params.bloggerId));
+    const paginationData = constructorPagination(req.query as ArgPaginationType);
+    res.send(await bloggersService.getPostsById(req.params.bloggerId, paginationData));
   })
   .post(
     '/:bloggerId/posts',
