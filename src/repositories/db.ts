@@ -1,6 +1,8 @@
 import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
 
-const mongoUri = process.env.mongoURI || 'mongodb://0.0.0.0:27017/?maxPoolSize=20&w=majority';
+dotenv.config();
+const mongoUri = `mongodb+srv://krovorgen:${process.env.MONGO_PASSWORD}@krovorgen.9aigm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 export const client = new MongoClient(mongoUri);
 
